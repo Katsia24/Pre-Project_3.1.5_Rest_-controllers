@@ -10,9 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.util.UsernameOrEmailExistException;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -44,6 +47,21 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
+    public void save(User user) {
+        if (userRepository.findByUsername(user.getUsername()) != null || userRepository.findByEmail(user.getEmail()) != null) {
+                throw new UsernameOrEmailExistException();
+        }
+        if (user.getRoles() == null) {
+            List<Long> roleIds = new ArrayList<>();
+            roleIds.add(2L);
+            user.setRoles(new HashSet<>(roleService.findAllById(roleIds)));
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
     public void delete(long id) {
         userRepository.deleteById(id);
     }
@@ -58,6 +76,23 @@ public class UserServiceImp implements UserService {
         savedUser.setYearOfBirth(user.getYearOfBirth());
         List<Role> savedRoles = roleService.findAllById(roles);
         savedUser.setRoles(new HashSet<>(savedRoles));
+        userRepository.save(savedUser);
+    }
+
+    @Override
+    @Transactional
+    public void update(User user) {
+        if (userRepository.findById(user.getId()).isEmpty()){
+            throw new UsernameNotFoundException("User whit ID " + user.getId() + " not found");
+        }
+        User savedUser = userRepository.getById(user.getId());
+
+        savedUser.setUsername(user.getUsername());
+        savedUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        savedUser.setEmail(user.getEmail());
+        savedUser.setYearOfBirth(user.getYearOfBirth());
+        savedUser.setRoles(user.getRoles());
+
         userRepository.save(savedUser);
     }
 

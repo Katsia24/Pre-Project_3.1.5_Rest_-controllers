@@ -2,11 +2,15 @@ package ru.kata.spring.boot_security.demo.model;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
@@ -17,9 +21,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @Column(unique = true)
     private String username;
-    @Column(nullable = false)
+
+    @NotEmpty
     private String password;
 
     @ManyToMany
@@ -29,8 +36,10 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @Email
-    @Column(unique = true, nullable = false)
+    @NotEmpty(message = "Email should not be empty")
+    @Column(unique = true)
     private String email;
+
     private int yearOfBirth;
 
     public User() {
