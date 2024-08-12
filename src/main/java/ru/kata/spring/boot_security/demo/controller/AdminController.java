@@ -22,7 +22,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/api")
 public class AdminController {
 
     private final UserService userService;
