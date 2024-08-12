@@ -61,6 +61,11 @@ public class AdminController {
             return new ResponseEntity<>(userService.listUsers(), HttpStatus.OK);
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<User> getOneUser(@RequestParam("id") Long id) {
+        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
+    }
+
     // !!!WORK!!!
     @PostMapping("/addUser")
     public ResponseEntity<HttpStatus> addUser(@Valid @RequestBody User newUser,

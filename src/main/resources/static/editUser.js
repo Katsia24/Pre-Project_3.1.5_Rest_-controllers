@@ -15,7 +15,7 @@ function editUser() {
                 roles.push(formEdit.roles.options[i].text.replace('ROLE_', ''));
             }
         }
-        fetch("admin/api/authUser" + formEdit.id.value, {
+        fetch("admin/api/updateUser", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -1,5 +1,5 @@
 async function getOneUser(id) {
-    let response = await fetch("admin/api/authUser");
+    let response = await fetch("admin/api/user?id="+ id);
     return await response.json();
 }
 
