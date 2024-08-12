@@ -1,3 +1,5 @@
+'use strict';
+
 let formEdit = document.forms["formEdit"];
 editUser();
 
@@ -11,10 +13,11 @@ function editUser() {
         ev.preventDefault();
         let roles = [];
         for (let i = 0; i < formEdit.roles.options.length; i++) {
-            if (formEdit.roles.options[i].selected) {
-                roles.push(formEdit.roles.options[i].text.replace('ROLE_', ''));
-            }
+            if (formEdit.roles.options[i].selected) roles.push({
+                id: formEdit.roles.options[i].value
+            });
         }
+
         fetch("admin/api/updateUser", {
             method: 'POST',
             headers: {

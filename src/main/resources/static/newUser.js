@@ -9,8 +9,7 @@ function createNewUser() {
         let roles = [];
         for (let i = 0; i < form.roles.options.length; i++) {
             if (form.roles.options[i].selected) roles.push({
-                id: form.roles.options[i].value,
-                role: "ROLE_" + form.roles.options[i].text
+                id: form.roles.options[i].value
             });
         }
         fetch("admin/api/addUser", {
