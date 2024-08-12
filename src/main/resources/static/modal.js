@@ -10,6 +10,4 @@ async function openAndFillInTheModal(form, modal, id) {
     form.username.value = user.username;
     form.email.value = user.email;
     form.yearOfBirth.value = user.yearOfBirth;
-    form.roles.value = user.roles;
-    // form.roles.value = user.roles.join(',');
 }

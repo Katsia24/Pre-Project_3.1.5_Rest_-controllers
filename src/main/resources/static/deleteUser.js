@@ -25,6 +25,7 @@ function deleteUser() {
                 'Content-Type': 'application/json'
             }
         }).then(() => {
+            deleteForm.reset();
             $('#closeDelete').click();
             getTableUser();
         });
